@@ -4,24 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap.css">
     <title>Document</title>
 </head>
 <body>
-    <h1>Currency Exchange</h1>
-
-    <div class="form-group blu-margin">
-        <h2>From:</h2>
-        <select class="form-control" th:field="${currency}"  id="currency">
-        <option th:each="item : ${currency}" th:value="item" th:text="${item}"></option>
+    <h1>Currency Exchange Form</h1>
+    <div class="form-group blu-margin"></div>
+    <form action="/currency" method="POST">
+    
+        <h2>From</h2>
+        <select class="form-control" id="currency_1"  name="currency_1">
+            <option th:each="item1 : ${currency}" th:value="${item1}" th:text="${item1}"></option>
         </select>
         <h2>To:</h2>
-        <select class="form-control" th:field="${currency}"  id="currency">
-        <option th:each="item : ${currency}" th:value="item" th:text="${item}"></option>
+        <select class="form-control" id="currency_2" name="currency_2">
+        <option th:each="item2 : ${currency}" th:value="${item2}" th:text="${item2}"></option>
         </select>
-        <form action="/currency" method="POST">
-            <input type="text">
-            <button type="submit">Submit</button>
-        </form>
+        <h2>Amount</h2>
+        <input type="text" name="amountToChange" data-th-value="${amountToChange}">
+        <button type="submit" formaction="/currency" formmethod="POST">Convert</button> 
+    </form>
     </div>
 </body>
 </html>

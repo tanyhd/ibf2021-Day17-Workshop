@@ -23,6 +23,7 @@ public class CurrencyService {
     
     private static final String CURRENCY_API = System.getenv("currencyAPI");
     private static final String CURRENCY_URL = "https://free.currconv.com//api/v7/currencies";
+    private static final String CURRENCY_CONVERT_URL = "https://free.currconv.com/api/v7/convert";
 
     public List<String> getAllCurrency() {
         List<String> currenyList = new ArrayList<>();
@@ -58,6 +59,40 @@ public class CurrencyService {
         } catch(Exception e) {}
 
         return currenyList;
+    }
+
+    public String convert(String currency_1, String currency_2, String amount) {
+
+        String convertCurrency = currency_1 + "_" + currency_2;
+        String convertedResult = "";
+        float conversionRate;
+        float amountToChange = Float.parseFloat(amount);
+
+        String url = UriComponentsBuilder
+                    .fromUriString(CURRENCY_CONVERT_URL)
+                    .queryParam("q", convertCurrency)
+                    .queryParam("compact", "ultra")
+                    .queryParam("apiKey", CURRENCY_API)
+                    .toUriString();
+        RequestEntity<Void> req = RequestEntity.get(url).build();
+        RestTemplate template = new RestTemplate();
+        ResponseEntity<String> resp = template.exchange(req, String.class);
+
+        if(resp.getStatusCode() != HttpStatus.OK) {
+            throw new IllegalArgumentException("Error: status code %d".format(resp.getStatusCode().toString()));
+        }
+
+        String body = resp.getBody();
+
+        try(InputStream is = new ByteArrayInputStream(body.getBytes())) {
+            JsonReader reader = Json.createReader(is);
+            JsonObject result = reader.readObject();
+            conversionRate = Float.parseFloat(result.get(convertCurrency).toString());
+            convertedResult = Float.toString(amountToChange * conversionRate);
+
+        } catch(Exception e) {}
+
+        return convertedResult;
     }
 
 }
