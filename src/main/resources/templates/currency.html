@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Currency Exchange</h1>
+
+    <div class="form-group blu-margin">
+        <h2>From:</h2>
+        <select class="form-control" th:field="${currency}"  id="currency">
+        <option th:each="item : ${currency}" th:value="item" th:text="${item}"></option>
+        </select>
+        <h2>To:</h2>
+        <select class="form-control" th:field="${currency}"  id="currency">
+        <option th:each="item : ${currency}" th:value="item" th:text="${item}"></option>
+        </select>
+        <form action="/currency" method="POST">
+            <input type="text">
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
